@@ -6,14 +6,14 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:48:59 by acaceres          #+#    #+#             */
-/*   Updated: 2023/05/02 09:07:31 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/05/02 22:03:57 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 20
 # endif
 # include <unistd.h>
 # include <stdlib.h>

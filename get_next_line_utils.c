@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:58:06 by acaceres          #+#    #+#             */
-/*   Updated: 2023/05/02 09:15:25 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/05/02 22:05:13 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_find_line_break(t_list *node)
 {
 	int	i;
-	
+
 	i = 0;
 	if (node == NULL)
 		return (0);
