@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 20
+#  define BUFFER_SIZE 10
 # endif
 # include <unistd.h>
 # include <stdlib.h>
@@ -28,5 +28,6 @@ int		ft_find_line_break(t_list *node);
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstprint(t_list *node);
+void	ft_lstdelone(t_list *lst, void (*del)(void*));
 
 #endif

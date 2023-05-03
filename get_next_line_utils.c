@@ -68,3 +68,11 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	tail = ft_lstlast(*lst);
 	tail->next = new;
 }
+
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+	if (lst == NULL || del == NULL)
+		return ;
+	del(lst->content);
+	free(lst);
+}
