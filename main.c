@@ -36,7 +36,6 @@ int	main(void)
 	printf("Line == %s", get_next_line(fd));
 	printf("Line == %s", get_next_line(fd));
 	printf("Line == %s", get_next_line(fd));
-	printf("Line == %s", get_next_line(fd));
   // get_next_line(fd);
 	return (0);
 }
