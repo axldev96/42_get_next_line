@@ -76,3 +76,10 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*))
 	del(lst->content);
 	free(lst);
 }
+
+int	ft_lstsize(t_list *lst)
+{
+	if (!lst)
+		return (0);
+	return (1 + (ft_lstsize(lst->next)));
+}

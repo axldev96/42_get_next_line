@@ -29,13 +29,16 @@ void	ft_lstprint(t_list *node)
 int	main(void)
 {
 	int	fd;
+    char *line;
 
 	fd = open("test.txt", O_RDONLY);
-	printf("Line == %s", get_next_line(fd));
-	printf("Line == %s", get_next_line(fd));
-	printf("Line == %s", get_next_line(fd));
-	printf("Line == %s", get_next_line(fd));
-	printf("Line == %s", get_next_line(fd));
+    while ((line = get_next_line(fd)))
+    {
+      printf("Line = %s", line);
+      free(line);
+    }
+    close(fd);
+  
   // get_next_line(fd);
 	return (0);
 }
