@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:52:22 by acaceres          #+#    #+#             */
-/*   Updated: 2023/05/08 14:40:07 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/05/08 15:15:14 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,30 +69,26 @@ int	ft_set_lst(int fd, t_list **lst)
 	return (1);
 }
 
-char    *ft_set_line(t_list **lst)
+char	*ft_set_line(t_list **lst)
 {
 	char	*line;
 	t_list	*current;
 	int		i;
 	int		j;
-	
+
 	line = 0;
 	i = 0;
 	j = 0;
 	current = *lst;
 	line = (char *)malloc(((ft_lstsize(*lst) * BUFFER_SIZE) + ft_setsize_lastnode(*lst) + 1) * sizeof(char));
-  if (!line)
-    return (0);
+	if (!line)
+		return (0);
 	while (current)
 	{
 		while (current->content[i])
 		{
 			if (current->content[i] == '\n')
-			{
-				line[j++] = current->content[i++];
-				line[j] = 0;
-				return (line);
-			}
+				return (line[j++] = current->content[i++], line[j] = 0, line);
 			line[j++] = current->content[i++];
 		}
 		i = 0;
@@ -104,13 +100,13 @@ char    *ft_set_line(t_list **lst)
 	return (line);
 }
 
-size_t  ft_setsize_lastnode(t_list *lst)
+size_t	ft_setsize_lastnode(t_list *lst)
 {
 	size_t	size;
 	t_list	*last_node;
-    
-    if (!lst)
-      return (0);
+
+	if (!lst)
+		return (0);
 	size = 0;
 	last_node = ft_lstlast(lst);
 	while (last_node->content[size] && last_node->content[size] != '\n')
@@ -118,7 +114,7 @@ size_t  ft_setsize_lastnode(t_list *lst)
 	return (size);
 }
 
-int ft_fill_list(t_list **lst)
+int	ft_fill_list(t_list **lst)
 {
 	t_list	*current;
 	t_list	*new_node;
@@ -129,16 +125,16 @@ int ft_fill_list(t_list **lst)
 	i = 0;
 	j = 0;
 	k = 0;
-    if (!*lst)
-      return (0);
+	if (!*lst)
+		return (0);
 	new_node = 0;
 	current = ft_lstlast(*lst);
-    if (!current->content[i])
-      return (0);
+	if (!current->content[i])
+		return (0);
 	while (current->content[i] && current->content[i] != '\n')
 		i++;
-    if (current->content[i] == '\n')
-      i++;
+	if (current->content[i] == '\n')
+		i++;
 	j = i;
 	while (current->content[i])
 		i++;

@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:46:51 by acaceres          #+#    #+#             */
-/*   Updated: 2023/05/02 22:06:10 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/05/08 15:16:17 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,15 @@ void	ft_lstprint(t_list *node)
 
 int	main(void)
 {
-	int	fd;
-    char *line;
+	int		fd;
+    char	*line;
 
 	fd = open("test.txt", O_RDONLY);
-    while ((line = get_next_line(fd)))
-    {
-      printf("Line = %s", line);
-      free(line);
-    }
-    close(fd);
-  
-  // get_next_line(fd);
+	while ((line = get_next_line(fd)))
+	{
+		printf("Line = %s", line);
+		free(line);
+	}
+	close(fd);
 	return (0);
 }
