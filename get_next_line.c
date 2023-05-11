@@ -120,15 +120,11 @@ int	ft_fill_list(t_list **lst)
 	t_list	*new_node;
 	int		i;
 	int		j;
-	int		k;
 
 	i = 0;
 	j = 0;
-	k = 0;
 	new_node = 0;
-	if (!*lst)
-		return (0);
-	current = ft_lstlast(*lst);
+    current = ft_lstlast(*lst);
     while (current->content[i] && current->content[i] != '\n')
 		i++;
 	if (current->content[i] == '\n')
@@ -143,7 +139,8 @@ int	ft_fill_list(t_list **lst)
 	if (!new_node->content)
 		return (free(new_node), 0);
 	new_node->next = 0;
+    i = 0;
 	while (current->content[j])
-		new_node->content[k++] = current->content[j++];
-	return (new_node->content[k] = 0, ft_lstclear(lst, free), ft_lstadd_back(lst, new_node), 1);
+		new_node->content[i++] = current->content[j++];
+	return (new_node->content[i] = 0, ft_lstclear(lst, free),ft_lstadd_back(lst, new_node), 1);
 }
