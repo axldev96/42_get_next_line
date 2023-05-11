@@ -31,7 +31,7 @@ int	main(void)
 	int		fd;
     char	*line;
 
-	fd = open("test.txt", O_RDONLY);
+	fd = open("the_bible.txt", O_RDONLY);
 	while ((line = get_next_line(fd)))
 	{
 		printf("Line = %s", line);
