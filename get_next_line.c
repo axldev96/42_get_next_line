@@ -6,14 +6,14 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:52:22 by acaceres          #+#    #+#             */
-/*   Updated: 2023/05/11 03:50:10 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/05/11 03:58:02 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 int		ft_set_lst(int fd, t_list **lst);
-char	*ft_set_line(t_list **lst);
+char	*ft_set_line(t_list *lst);
 size_t	ft_setsize_lastnode(t_list *lst);
 int		ft_fill_list(t_list **lst, t_list *last_node);
 
@@ -34,7 +34,7 @@ char	*get_next_line(int fd)
 	set_lst = ft_set_lst(fd, &lst);
 	if (!set_lst)
 		return (ft_lstclear(&lst, free), NULL);
-	line = ft_set_line(&lst);
+	line = ft_set_line(lst);
 	if (!line)
 		return (ft_lstclear(&lst, free), NULL);
 	last_node = ft_lstlast(lst);
@@ -72,29 +72,27 @@ int	ft_set_lst(int fd, t_list **lst)
 	return (1);
 }
 
-char	*ft_set_line(t_list **lst)
+char	*ft_set_line(t_list *lst)
 {
 	char	*line;
-	t_list	*current;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	current = *lst;
-	line = (char *)malloc((ft_setsize_lastnode(*lst) + 1) * sizeof(char));
+	line = (char *)malloc((ft_setsize_lastnode(lst) + 1) * sizeof(char));
 	if (!line)
 		return (0);
-	while (current)
+	while (lst)
 	{
-		while (current->content[i])
+		while (lst->content[i])
 		{
-			if (current->content[i] == '\n')
-				return (line[j++] = current->content[i++], line[j] = 0, line);
-			line[j++] = current->content[i++];
+			if (lst->content[i] == '\n')
+				return (line[j++] = lst->content[i++], line[j] = 0, line);
+			line[j++] = lst->content[i++];
 		}
 		i = 0;
-		current = current->next;
+		lst = lst->next;
 	}
 	line[j] = 0;
 	if (!line[0])
@@ -136,6 +134,7 @@ int	ft_fill_list(t_list **lst, t_list *last_node)
 
 	i = 0;
 	j = 0;
+	new_node = 0;
 	while (last_node->content[i] && last_node->content[i] != '\n')
 		i++;
 	if (last_node->content[i] == '\n')
