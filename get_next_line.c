@@ -6,151 +6,139 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:52:22 by acaceres          #+#    #+#             */
-/*   Updated: 2023/05/11 03:58:02 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/09 05:19:06 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		ft_set_lst(int fd, t_list **lst);
-char	*ft_set_line(t_list *lst);
-size_t	ft_setsize_lastnode(t_list *lst);
-int		ft_fill_list(t_list **lst, t_list *last_node);
+static void	create_list(int fd, t_list **lst);
+static char	*set_line(t_list **lst, char *line);
+
+void	print_list(t_list *list)
+{
+	if (!list)
+		return ;
+	printf("node->index: %li\tnode->content: %s\tnode->nl: %li\tnode->len: %li\n",
+		list->index, list->content, list->nl, list->len);
+	print_list(list->next);
+}
 
 char	*get_next_line(int fd)
 {
 	static t_list	*lst;
-	char			*line;
-	int				set_lst;
-	int				list_filled;
-	t_list			*last_node;
+	char		*line;
 
-	line = 0;
-	set_lst = 0;
-	list_filled = 0;
-	last_node = 0;
-	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) < 0)
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) == -1)
 		return (ft_lstclear(&lst, free), NULL);
-	set_lst = ft_set_lst(fd, &lst);
-	if (!set_lst)
-		return (ft_lstclear(&lst, free), NULL);
-	line = ft_set_line(lst);
+	create_list(fd, &lst);
+	//print_list(lst);
+	line = set_line(&lst, line);
 	if (!line)
-		return (ft_lstclear(&lst, free), NULL);
-	last_node = ft_lstlast(lst);
-	list_filled = ft_fill_list(&lst, last_node);
-	if (!list_filled)
-		return (ft_lstclear(&lst, free), NULL);
+		return (NULL);
+	//printf("\n============after line================\n");
+	//print_list(lst);
+	//ft_lstclear(&lst, free);
 	return (line);
 }
 
-int	ft_set_lst(int fd, t_list **lst)
+static void	create_list(int fd, t_list **lst)
 {
-	int		_r;
+	int	_r;
+	ssize_t	index;
+	char	*buff;
 	t_list	*node;
 
 	_r = 0;
-	node = 0;
-	while (!ft_find_line_break(ft_lstlast(*lst)))
+	index = 1;
+	node = NULL;
+	if (*lst && (*lst)->nl != -1)
+		return ;
+	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buff)
+		return (ft_lstclear(lst, free));
+	while (1)
 	{
-		node = (t_list *)malloc(sizeof(t_list));
-		if (!node)
-			return (0);
-		node->content = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-		if (!node->content)
-			return (free(node), 0);
-		_r = read(fd, node->content, BUFFER_SIZE);
+		_r = read(fd, buff, BUFFER_SIZE);
 		if (_r == 0)
-			return (free(node->content), free(node), 1);
-		if (_r < 0)
-			return (free(node->content), free(node), 0);
-		node->content[_r] = 0;
-		node->next = NULL;
+			return (free(buff));
+		if (_r == -1)
+			return (free(buff), ft_lstclear(lst, free));
+		buff[_r] = '\0';
+		node = create_node(buff, &index);
+		if (!node)
+			return (free(buff), ft_lstclear(lst, free));
 		ft_lstadd_back(lst, node);
+		if (node->nl != -1)
+			return (free(buff));
 		node = node->next;
 	}
-	return (1);
+	free(buff);
 }
 
-char	*ft_set_line(t_list *lst)
+static char	*set_line(t_list **lst, char *line)
 {
-	char	*line;
-	int		i;
-	int		j;
+	t_list	*new_lst;
+	t_list	*tmp;
+	//t_list	*del_tmp;
+	ssize_t	len;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	line = (char *)malloc((ft_setsize_lastnode(lst) + 1) * sizeof(char));
+	tmp = NULL;
+	//del_tmp = NULL;
+	new_lst = NULL;
+	len = 0;
+	if (!*lst)
+		return (NULL);
+	tmp = *lst;
+	while (tmp)
+	{
+		if (tmp->nl == -1)
+			len += tmp->len;
+		else
+		{
+			len += tmp->nl;
+			len++;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	if (len <= 0)
+		return (ft_lstclear(lst, free), NULL);
+	line = malloc(sizeof(char) * (len + 1));
 	if (!line)
-		return (0);
-	while (lst)
+		return (ft_lstclear(lst, free), NULL);
+	tmp = *lst;
+	while (tmp)
 	{
-		while (lst->content[i])
-		{
-			if (lst->content[i] == '\n')
-				return (line[j++] = lst->content[i++], line[j] = 0, line);
-			line[j++] = lst->content[i++];
-		}
 		i = 0;
-		lst = lst->next;
-	}
-	line[j] = 0;
-	if (!line[0])
-		return (free(line), NULL);
-	return (line);
-}
-
-size_t	ft_setsize_lastnode(t_list *lst)
-{
-	size_t	size;
-	size_t	i;
-	t_list	*node;
-
-	if (!lst)
-		return (0);
-	size = 0;
-	i = 0;
-	node = lst;
-	while (node)
-	{
-		while (node->content[i])
+		while (tmp->content[i])
 		{
-			if (node->content[i] == '\n')
-				return (++size);
-			size++;
+			if (tmp->content[i] == '\n')
+			{
+				line[j++] = tmp->content[i];
+				line[j] = '\0';
+				len = 1;
+				new_lst = create_node(&tmp->content[++i], &len);
+				ft_lstclear(lst, free);
+				*lst = new_lst;
+				return (line);
+			}
+			//printf("len: %li\ti:%i\tj:%i\n", len, i, j);
+			//return (free(line), ft_lstclear(lst, free), NULL);
+			line[j] = tmp->content[i];
 			i++;
+			j++;
 		}
-		i = 0;
-		node = node->next;
+		tmp = tmp->next;
 	}
-	return (size);
-}
-
-int	ft_fill_list(t_list **lst, t_list *last_node)
-{
-	t_list	*new_node;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	new_node = 0;
-	while (last_node->content[i] && last_node->content[i] != '\n')
-		i++;
-	if (last_node->content[i] == '\n')
-		i++;
-	j = i;
-	while (last_node->content[i])
-		i++;
-	new_node = (t_list *)malloc(sizeof(t_list));
-	if (!new_node)
-		return (0);
-	new_node->content = (char *)malloc((i - j + 1) * sizeof(char));
-	if (!new_node->content)
-		return (free(new_node), 0);
-	i = 0;
-	while (last_node->content[j])
-		new_node->content[i++] = last_node->content[j++];
-	return (new_node->next = 0, new_node->content[i] = 0,
-		ft_lstclear(lst, free), ft_lstadd_back(lst, new_node), 1);
+	line[j] = '\0';
+	if (line[0] == '\0')
+		return (free(line), ft_lstclear(lst, free), NULL);
+	ft_lstclear(lst, free);
+	return (line);
 }
