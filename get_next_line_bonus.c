@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:52:22 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/09 05:39:59 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/09 05:43:42 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static void	create_list(int fd, t_list **lst);
 static char	*set_line(t_list **lst, char *line);
@@ -26,15 +26,15 @@ void	print_list(t_list *list)
 
 char	*get_next_line(int fd)
 {
-	static t_list	*lst;
+	static t_list	*lst[FD_MAX];
 	char		*line;
 
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) == -1)
-		return (ft_lstclear(&lst, free), NULL);
-	create_list(fd, &lst);
+		return (ft_lstclear(&lst[fd], free), NULL);
+	create_list(fd, &lst[fd]);
 	//print_list(lst);
-	line = set_line(&lst, line);
+	line = set_line(&lst[fd], line);
 	if (!line)
 		return (NULL);
 	//printf("\n============after line================\n");

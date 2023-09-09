@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 12:59:41 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/09 05:23:16 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/09 05:39:10 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,10 @@ int	main(void)
 	char	*line;
 
 	fd = open("41_no_nl", O_RDONLY);
-	while (1)
+	while ((line = get_next_line(fd)))
 	{
-		line = get_next_line(fd);
-		if (line)
-		{
-			printf("%s", line);
-			free(line);
-		}
-		else
-		{
-			printf("%s\n", line);
-			free(line);
-			break ;
-		}
+		printf("line: %s", line);
+		free(line);
 	}
 	return (0);
 }
