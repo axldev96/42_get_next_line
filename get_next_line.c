@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:52:22 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/10 04:42:15 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/10 05:20:21 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,54 +73,46 @@ static ssize_t	line_len(t_list **lst)
 		if (tmp->nl == -1)
 			len += tmp->len;
 		else
-		{
-			len += tmp->nl;
-			len++;
-			break ;
-		}
+			return (len += tmp->nl, ++len);
 		tmp = tmp->next;
 	}
 	return (len);
 }
 
 static	char
-	*fill_line(t_list **lst, t_list *tmp, t_list *new_lst, int *j, char *line)
+	*fill_line(t_list **lst, t_list *tmp, t_list *new_lst, char *line)
 {
 	int	i;
+	int	j;
 
+	j = 0;
 	while (tmp)
 	{
-		i = 0;
-		while (tmp->content[i])
+		i = -1;
+		while (tmp->content[++i])
 		{
 			if (tmp->content[i] == '\n')
 			{
-				line[(*j)++] = tmp->content[i];
-				line[*j] = '\0';
-				new_lst = create_node(&tmp->content[++i]);	char	*buff;
-
+				line[j++] = tmp->content[i];
+				line[j] = '\0';
+				new_lst = create_node(&tmp->content[++i]);
 				if (!new_lst)
 					return (NULL);
 				return (ft_lstclear(lst, free),
 					ft_lstadd_back(lst, new_lst), line);
 			}
-			line[*j] = tmp->content[i];
-			i++;
-			(*j)++;
+			line[j++] = tmp->content[i];
 		}
 		tmp = tmp->next;
 	}
-	ft_lstclear(lst, free);
-	return (line[*j] = '\0', line);
+	return (ft_lstclear(lst, free), line[j] = '\0', line);
 }
 
 static char	*set_line(t_list **lst, char *line)
 {
 	t_list	*new_lst;
 	t_list	*tmp;
-	int	j;
 
-	j = 0;
 	tmp = NULL;
 	new_lst = NULL;
 	if (!*lst)
@@ -129,7 +121,7 @@ static char	*set_line(t_list **lst, char *line)
 	line = malloc(sizeof(char) * (line_len(lst) + 1));
 	if (!line)
 		return (ft_lstclear(lst, free), NULL);
-	line = fill_line(lst, tmp, new_lst, &j, line);
+	line = fill_line(lst, tmp, new_lst, line);
 	if (!line || line[0] == '\0')
 		return (free(line), ft_lstclear(lst, free), NULL);
 	return (line);
