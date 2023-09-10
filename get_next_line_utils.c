@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:58:06 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/09 04:23:07 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/10 04:39:49 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,33 +53,31 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	tail->next = new;
 }
 
-t_list	*create_node(char *content, ssize_t *index)
+t_list	*create_node(char *content)
 {
-	int	i;
 	t_list	*node;
+	int		i;
 
 	i = 0;
-	node = NULL;
 	if (!content)
 		return (NULL);
-	while (content[i])
-		i++;
 	node = malloc(sizeof(t_list));
 	if (!node)
 		return (NULL);
+	while (content[i])
+		i++;
 	node->content = malloc(sizeof(char) * (i + 1));
 	if (!node->content)
 		return (free(node), NULL);
-	i = 0;
+	i = -1;
 	node->nl = -1;
 	node->len = -1;
-	while (content[i])
+	while (content[++i])
 	{
 		if (node->nl == -1 && content[i] == '\n')
 			node->nl = i;
 		node->content[i] = content[i];
-		i++;
 	}
 	node->content[i] = '\0';
-	return (node->len = i, node->index = (*index)++, node->next = NULL, node);
+	return (node->len = i, node->next = NULL, node);
 }

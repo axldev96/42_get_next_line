@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:48:59 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/09 05:37:58 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/10 03:45:53 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 
 typedef struct s_list {
 	char			*content;
-	ssize_t			index;
 	ssize_t			nl;
 	ssize_t			len;
 	struct s_list	*next;
@@ -34,6 +33,6 @@ void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 t_list	*ft_lstlast(t_list *lst);
-t_list	*create_node(char *content, ssize_t *index);
+t_list	*create_node(char *content);
 
 #endif
