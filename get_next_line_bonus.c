@@ -1,34 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: acaceres <acaceres@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/02 07:52:22 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/10 05:46:09 by acaceres         ###   ########.fr       */
+/*   Created: 2023/09/10 05:22:15 by acaceres          #+#    #+#             */
+/*   Updated: 2023/09/10 05:23:42 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
-static void	create_list(int fd, t_list **lst);
-static char	*set_line(t_list **lst, char *line);
-
-char	*get_next_line(int fd)
-{
-	static t_list	*lst;
-	char			*line;
-
-	line = NULL;
-	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) == -1)
-		return (ft_lstclear(&lst, free), NULL);
-	create_list(fd, &lst);
-	line = set_line(&lst, line);
-	if (!line)
-		return (NULL);
-	return (line);
-}
+#include "get_next_line_bonus.h"
 
 static void	create_list(int fd, t_list **lst)
 {
@@ -85,7 +67,6 @@ static	char
 	int	i;
 	int	j;
 
-	i = -1;
 	j = 0;
 	while (tmp)
 	{
@@ -124,6 +105,21 @@ static char	*set_line(t_list **lst, char *line)
 		return (ft_lstclear(lst, free), NULL);
 	line = fill_line(lst, tmp, new_lst, line);
 	if (!line || line[0] == '\0')
-		return (free(line), line = NULL, ft_lstclear(lst, free), NULL);
+		return (free(line), ft_lstclear(lst, free), NULL);
+	return (line);
+}
+
+char	*get_next_line(int fd)
+{
+	static t_list	*lst[FD_MAX];
+	char			*line;
+
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) == -1)
+		return (ft_lstclear(&lst[fd], free), NULL);
+	create_list(fd, &lst[fd]);
+	line = set_line(&lst[fd], line);
+	if (!line)
+		return (NULL);
 	return (line);
 }

@@ -1,7 +1,0 @@
-this is a text
-to test the
-get next line
-42 project
-created
-with
-linked list

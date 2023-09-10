@@ -6,11 +6,11 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 12:59:41 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/10 04:27:57 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/10 05:37:30 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <stdio.h>
 #include <fcntl.h>
 
