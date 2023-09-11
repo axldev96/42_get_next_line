@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:52:22 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/11 06:10:13 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/11 06:34:56 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static ssize_t	line_len(t_list **lst)
 		if (tmp->nl == -1)
 			len += tmp->len;
 		else
-			return (len += tmp->nl, ++len);
+			return (len += tmp->nl + 1, len);
 		tmp = tmp->next;
 	}
 	return (len);
@@ -128,6 +128,6 @@ static char	*set_line(t_list **lst, char *line)
 		return (ft_lstclear(lst, free), NULL);
 	line = fill_line(lst, tmp, new_lst, line);
 	if (!line || line[0] == '\0')
-		return (free(line), line = NULL, ft_lstclear(lst, free), NULL);
+		return (free(line), line = NULL, NULL);
 	return (line);
 }
