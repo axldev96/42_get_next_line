@@ -6,7 +6,7 @@
 /*   By: acaceres <acaceres@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:24:19 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/10 05:24:24 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/11 04:03:54 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,21 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 	*lst = NULL;
 }
 
-t_list	*ft_lstlast(t_list *lst)
-{
-	if (!lst)
-		return (0);
-	if (!lst->next)
-		return (lst);
-	return (ft_lstlast(lst->next));
-}
-
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
+	t_list	*tmp;
 	t_list	*tail;
 
+	tail = NULL;
 	if (!*lst)
 	{
 		*lst = new;
 		return ;
 	}
-	tail = ft_lstlast(*lst);
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	tail = tmp;
 	tail->next = new;
 }
 
