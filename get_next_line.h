@@ -6,7 +6,7 @@
 /*   By: acaceres <acaceres@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:27:38 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/10 05:27:40 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/11 06:10:25 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_list {
 char	*get_next_line(int fd);
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstadd_back(t_list **lst, t_list *new);
+char	*buff_size_1(int fd, char *line, char *tmp);
 t_list	*create_node(char *content);
 
 #endif

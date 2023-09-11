@@ -6,7 +6,7 @@
 /*   By: acaceres <acaceres@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:22:15 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/10 05:23:42 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/11 06:11:04 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static ssize_t	line_len(t_list **lst)
 	ssize_t	len;
 
 	len = 0;
+	tmp = NULL;
 	if (!*lst)
 		return (0);
 	tmp = *lst;
@@ -113,10 +114,14 @@ char	*get_next_line(int fd)
 {
 	static t_list	*lst[FD_MAX];
 	char			*line;
+	char			*tmp;
 
 	line = NULL;
+	tmp = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) == -1)
 		return (ft_lstclear(&lst[fd], free), NULL);
+	if (BUFFER_SIZE == 1)
+		return (buff_size_1(fd, line, tmp));
 	create_list(fd, &lst[fd]);
 	line = set_line(&lst[fd], line);
 	if (!line)

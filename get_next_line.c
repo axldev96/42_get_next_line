@@ -6,7 +6,7 @@
 /*   By: acaceres <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 07:52:22 by acaceres          #+#    #+#             */
-/*   Updated: 2023/09/10 05:46:09 by acaceres         ###   ########.fr       */
+/*   Updated: 2023/09/11 06:10:13 by acaceres         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,14 @@ char	*get_next_line(int fd)
 {
 	static t_list	*lst;
 	char			*line;
+	char			*tmp;
 
 	line = NULL;
+	tmp = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) == -1)
 		return (ft_lstclear(&lst, free), NULL);
+	if (BUFFER_SIZE == 1)
+		return (buff_size_1(fd, line, tmp));
 	create_list(fd, &lst);
 	line = set_line(&lst, line);
 	if (!line)
